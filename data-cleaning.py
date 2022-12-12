@@ -1,26 +1,55 @@
 import pandas as pd
+import numpy as np
 
 #read datasets
 df_weather = pd.read_csv('weather_data.csv')
 df_price_demand = pd.read_csv('price_demand_data.csv') 
 
-#glancing data types 
-# print(df_weather.dtypes)
-# print(df_price_demand.dtypes)
-
 #converting data types to datetime
-df_weather['Date'] = pd.to_datetime(df_weather['Date'], format='%d%m%Y', errors='ignore')
-df_price_demand['SETTLEMENTDATE'] = pd.to_datetime(df_price_demand['SETTLEMENTDATE'], format='%d%m%Y:%H:%M:%S', errors='ignore')
+df_weather['Date'] = pd.to_datetime(df_weather['Date'], format='%d/%m/%Y', errors='ignore')
+df_price_demand['SETTLEMENTDATE'] = pd.to_datetime(df_price_demand['SETTLEMENTDATE'], format='%d/%m/%Y %H:%M', errors='ignore')
 
 #converting object to float 
 df_weather['9am wind speed (km/h)'] = pd.to_numeric(df_weather['9am wind speed (km/h)'], errors='coerce')
 df_weather['3pm wind speed (km/h)'] = pd.to_numeric(df_weather['3pm wind speed (km/h)'], errors= 'coerce')
 
-#Step 1: Remove irrelevant data
+#skip-Step 1: Remove irrelevant data if needed
+#skip-Step 2: Deduplicate your data - no duplicated data by checking via df.duplicated()
+#skip-Step 3: Fix structural errors- refer datatypes convervaersion above
+#Step 4: Deal with missing data
+total_missing_num = 0
+for colunm_name in df_weather.columns:
+    weather_missing_num = df_weather[colunm_name].isnull().sum()
+    total_missing_num += weather_missing_num
+# print(f'percentage of missing data, {total_missing_num / len(df_weather.iloc[:])}' )
 
+price_missing_num = 0
+for colunm_name in df_price_demand.columns:
+    price_missing_num = df_price_demand[colunm_name].isnull().sum()
+    # print(f'{colunm_name}', price_missing_num)
 
-#Step 2: Deduplicate your data
-# Step 3: Fix structural errors
-# Step 4: Deal with missing data
+pd.set_option('display.max_rows', 500)
+df_weather.dropna(axis= 0, inplace=True)
+
+df_weather.isnull().values.any()
+df_price_demand.isnull().values.any()
+
 # Step 5: Filter out data outliers
+#using IQR (Inter Quartile Range)-IQR = Quartile3 – Quartile1
+
+for colunm_name in df_weather.columns:
+    if df_weather[colunm_name].dtypes == 'object' or colunm_name == 'Date':
+        continue
+    Q1 = np.percentile(df_weather[colunm_name], 25, method = 'midpoint')
+    
+    Q3 = np.percentile(df_weather[colunm_name], 75, method = 'midpoint')
+
+    IQR = Q3 - Q1      
+
+    upper_bound = Q3 + 1.5 * IQR
+    lower_bound = Q1 - 1.5 * IQR
+
+    df_upper_bound = df_weather.loc[df_weather[colunm_name] > upper_bound]
+    df_lower_bound = df_weather.loc[df_weather[colunm_name] < lower_bound]
+    
 # Step 6: Validate your data
