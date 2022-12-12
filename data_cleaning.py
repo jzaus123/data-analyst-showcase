@@ -53,7 +53,7 @@ def clean_weather_dataset(df_weather):
         upper_bound = Q3 + 1.5 * IQR
         lower_bound = Q1 - 1.5 * IQR
 
-        df_upper_bound = df_weather.loc[df_weather[colunm_name] > upper_bound]
-        df_lower_bound = df_weather.loc[df_weather[colunm_name] < lower_bound]
+        df_upper_bound = df_weather.loc[df_weather[colunm_name] < upper_bound]
+        df_lower_bound = df_weather.loc[df_weather[colunm_name] > lower_bound]
     
     return df_weather
