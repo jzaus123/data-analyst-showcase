@@ -1,11 +1,7 @@
 import pandas as pd
 import numpy as np
 
-def clean_price_demand_dataset():
-
-    #read price_demand dataset
-    df_price_demand = pd.read_csv('price_demand_data.csv') 
-
+def clean_price_demand_dataset(df_price_demand):
     #convert data types to datetime
     df_price_demand['SETTLEMENTDATE'] = pd.to_datetime(df_price_demand['SETTLEMENTDATE'], format='%d/%m/%Y %H:%M', errors='ignore')
 
@@ -21,9 +17,7 @@ def clean_price_demand_dataset():
 
     return df_price_demand
   
-def clean_weather_dataset():
-
-    df_weather = pd.read_csv('weather_data.csv')
+def clean_weather_dataset(df_weather):
 
     #convert data types to datetime
     df_weather['Date'] = pd.to_datetime(df_weather['Date'], format='%d/%m/%Y', errors='ignore')
