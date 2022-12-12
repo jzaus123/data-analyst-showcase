@@ -6,14 +6,13 @@ def clean_price_demand_dataset():
     #read price_demand dataset
     df_price_demand = pd.read_csv('price_demand_data.csv') 
 
-    #converting data types to datetime
+    #convert data types to datetime
     df_price_demand['SETTLEMENTDATE'] = pd.to_datetime(df_price_demand['SETTLEMENTDATE'], format='%d/%m/%Y %H:%M', errors='ignore')
 
     #Step 4: Deal with missing data
     price_missing_num = 0
     for colunm_name in df_price_demand.columns:
         price_missing_num = df_price_demand[colunm_name].isnull().sum()
-        # print(f'{colunm_name}', price_missing_num)
 
     #drop off NaN values
     pd.set_option('display.max_rows', 500)
@@ -26,10 +25,10 @@ def clean_weather_dataset():
 
     df_weather = pd.read_csv('weather_data.csv')
 
-    #converting data types to datetime
+    #convert data types to datetime
     df_weather['Date'] = pd.to_datetime(df_weather['Date'], format='%d/%m/%Y', errors='ignore')
 
-    #converting object to float 
+    #convert object to float 
     df_weather['9am wind speed (km/h)'] = pd.to_numeric(df_weather['9am wind speed (km/h)'], errors='coerce')
     df_weather['3pm wind speed (km/h)'] = pd.to_numeric(df_weather['3pm wind speed (km/h)'], errors= 'coerce')
 
@@ -38,7 +37,6 @@ def clean_weather_dataset():
     for colunm_name in df_weather.columns:
         weather_missing_num = df_weather[colunm_name].isnull().sum()
         total_missing_num += weather_missing_num
-    # print(f'percentage of missing data, {total_missing_num / len(df_weather.iloc[:])}' )
 
     #drop off NaN values
     pd.set_option('display.max_rows', 500)
@@ -48,7 +46,7 @@ def clean_weather_dataset():
     df_weather.isnull().values.any()
 
     # Step 5: Filter out data outliers
-    #using IQR (Inter Quartile Range)-IQR = Quartile3 – Quartile1
+    #use IQR (Inter Quartile Range)-IQR = Quartile3 – Quartile1
     for colunm_name in df_weather.columns:
         if df_weather[colunm_name].dtypes == 'object' or colunm_name == 'Date':
             continue
