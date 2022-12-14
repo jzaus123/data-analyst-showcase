@@ -6,9 +6,11 @@ def clean_price_demand_dataset(df_price_demand):
     df_price_demand['SETTLEMENTDATE'] = pd.to_datetime(df_price_demand['SETTLEMENTDATE'], format='%d/%m/%Y %H:%M', errors='ignore')
 
     #Deal with missing data
-    price_missing_num = 0
     for colunm_name in df_price_demand.columns:
         price_missing_num = df_price_demand[colunm_name].isnull().sum()
+
+        if price_missing_num != 0:
+            print(f'{colunm_name} has {price_missing_num} NaN')
 
     #drop off NaN values
     df_price_demand.dropna(axis= 0, inplace=True)
