@@ -5,7 +5,7 @@ def clean_price_demand_dataset(df_price_demand):
     #convert data types to datetime
     df_price_demand['SETTLEMENTDATE'] = pd.to_datetime(df_price_demand['SETTLEMENTDATE'], format='%d/%m/%Y %H:%M', errors='ignore')
 
-    #Step 4: Deal with missing data
+    #Deal with missing data
     price_missing_num = 0
     for colunm_name in df_price_demand.columns:
         price_missing_num = df_price_demand[colunm_name].isnull().sum()
@@ -14,7 +14,7 @@ def clean_price_demand_dataset(df_price_demand):
     df_price_demand.dropna(axis= 0, inplace=True)
     df_price_demand.isnull().values.any()
 
-    # Step 5: Filter out data outliers
+    #Filter out data outliers
     #use IQR (Inter Quartile Range)-IQR = Quartile3 – Quartile1
     for colunm_name in df_price_demand.columns:
         if df_price_demand[colunm_name].dtypes == 'object' or colunm_name == 'SETTLEMENTDATE':
@@ -45,7 +45,7 @@ def clean_weather_dataset(df_weather):
     df_weather['9am wind speed (km/h)'] = pd.to_numeric(df_weather['9am wind speed (km/h)'], errors='coerce')
     df_weather['3pm wind speed (km/h)'] = pd.to_numeric(df_weather['3pm wind speed (km/h)'], errors= 'coerce')
 
-    #Step 4: Deal with missing data
+    #Deal with missing data
     total_missing_num = 0
     for colunm_name in df_weather.columns:
         weather_missing_num = df_weather[colunm_name].isnull().sum()
