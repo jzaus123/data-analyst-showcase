@@ -31,8 +31,6 @@ def clean_price_demand_dataset(df_price_demand):
         df_upper_bound = df_price_demand.loc[df_price_demand[colunm_name] > upper_bound]
         df_lower_bound = df_price_demand.loc[df_price_demand[colunm_name] < lower_bound]
 
-       
-
         df_price_demand.drop(df_upper_bound, inplace=True, errors = 'ignore')
         df_price_demand.drop(df_lower_bound, inplace=True,errors = 'ignore')
 
