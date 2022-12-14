@@ -15,6 +15,8 @@ def clean_price_demand_dataset(df_price_demand):
     #based on above check there is a small amount of NaN values so we can just drop them off
     df_price_demand.dropna(axis = 0, inplace = True)
 
+    # TODO Deduplicate your data - no duplicated data by checking via df.duplicated()
+
     #Filter out data outliers
     #use IQR (Inter Quartile Range)-IQR = Quartile3 – Quartile1
     for colunm_name in df_price_demand.columns:
