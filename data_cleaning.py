@@ -28,8 +28,13 @@ def clean_price_demand_dataset(df_price_demand):
         upper_bound = Q3 + 1.5 * IQR
         lower_bound = Q1 - 1.5 * IQR
 
-        df_upper_bound = df_price_demand.loc[df_price_demand[colunm_name] < upper_bound]
-        df_lower_bound = df_price_demand.loc[df_price_demand[colunm_name] > lower_bound]
+        df_upper_bound = df_price_demand.loc[df_price_demand[colunm_name] > upper_bound]
+        df_lower_bound = df_price_demand.loc[df_price_demand[colunm_name] < lower_bound]
+
+       
+
+        df_price_demand.drop(df_upper_bound, inplace=True, errors = 'ignore')
+        df_price_demand.drop(df_lower_bound, inplace=True,errors = 'ignore')
 
     return df_price_demand
   
@@ -54,21 +59,4 @@ def clean_weather_dataset(df_weather):
     #check NaN value 
     df_weather.isnull().values.any()
 
-    # Step 5: Filter out data outliers
-    #use IQR (Inter Quartile Range)-IQR = Quartile3 – Quartile1
-    for colunm_name in df_weather.columns:
-        if df_weather[colunm_name].dtypes == 'object' or colunm_name == 'Date':
-            continue
-        Q1 = np.percentile(df_weather[colunm_name], 5, method = 'midpoint')
-        
-        Q3 = np.percentile(df_weather[colunm_name], 95, method = 'midpoint')
-
-        IQR = Q3 - Q1      
-
-        upper_bound = Q3 + 1.5 * IQR
-        lower_bound = Q1 - 1.5 * IQR
-
-        df_upper_bound = df_weather.loc[df_weather[colunm_name] < upper_bound]
-        df_lower_bound = df_weather.loc[df_weather[colunm_name] > lower_bound]
-    
     return df_weather
