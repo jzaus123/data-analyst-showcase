@@ -15,9 +15,8 @@ def remove_missing_value(df):
     df.dropna(axis = 0, inplace = True)
 
 def deduplicate(df):
-    for colunm_name in df.columns:
-        if df.duplicated(subset = [colunm_name], keep = 'first') == 'False':
-            df.drop_duplicates()
+    df.drop_duplicates(keep = False)
+        
 
 def drop_outlier_data(df, ignored_column_list):
     #Filter out data outliers
