@@ -18,9 +18,9 @@ df_daily_totaldemand = df_price_demand.groupby(['SETTLEMENTDATE']).sum()
 df_weather_daily_totaldemand_joined = pd.merge(df_weather, df_daily_totaldemand, how = 'inner', left_on = 'Date', right_on = 'SETTLEMENTDATE')
 print(df_weather_daily_totaldemand_joined.head())
 
-for start_colunm_index in range(1, 21):
+for colunm_index in range(1, 21):
     feature_list = []
-    for colunm_name in df_weather_daily_totaldemand_joined.columns[start_colunm_index:]:
+    for colunm_name in df_weather_daily_totaldemand_joined.columns[colunm_index:21]:
         
         feature_list.append(colunm_name)
         print(feature_list)
