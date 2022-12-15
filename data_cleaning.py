@@ -17,7 +17,6 @@ def remove_missing_value(df):
 def deduplicate(df):
     df.drop_duplicates(keep = False)
         
-
 def drop_outlier_data(df, ignored_column_list):
     #Filter out data outliers
     #use IQR (Inter Quartile Range)-IQR = Quartile3 – Quartile1
