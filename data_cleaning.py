@@ -14,6 +14,11 @@ def remove_missing_value(df):
     #in other scenarios we can also choose to fill in aggregated values such as mean, median or mode
     df.dropna(axis = 0, inplace = True)
 
+def deduplicate(df):
+    for colunm_name in df.columns:
+        if df.duplicated(subset = [colunm_name], keep = 'first') == 'False':
+            df.drop_duplicates()
+
 def drop_outlier_data(df, ignored_column_list):
     #Filter out data outliers
     #use IQR (Inter Quartile Range)-IQR = Quartile3 – Quartile1
@@ -40,7 +45,7 @@ def clean_price_demand_dataset(df_price_demand):
 
     remove_missing_value(df_price_demand)
 
-    # TODO Deduplicate your data - no duplicated data by checking via df.duplicated()
+    deduplicate(df_price_demand)
 
     drop_outlier_data(df_price_demand, ['SETTLEMENTDATE'])
 
@@ -56,9 +61,9 @@ def clean_weather_dataset(df_weather):
     df_weather['3pm wind speed (km/h)'] = pd.to_numeric(df_weather['3pm wind speed (km/h)'], errors= 'coerce')
 
     remove_missing_value(df_weather)
-
-    # TODO deduplicate
     
+    deduplicate(df_weather)
+
     drop_outlier_data(df_weather, ['Date'])
 
     return df_weather
