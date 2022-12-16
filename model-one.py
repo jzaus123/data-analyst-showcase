@@ -17,21 +17,34 @@ df_price_demand['SETTLEMENTDATE'] = pd.to_datetime(df_price_demand['SETTLEMENTDA
 #calculate daily total demand
 df_daily_totaldemand = df_price_demand.groupby(['SETTLEMENTDATE']).sum()
 
-#
 df_weather_daily_totaldemand_joined = pd.merge(df_weather, df_daily_totaldemand, how = 'inner', left_on = 'Date', right_on = 'SETTLEMENTDATE')
 
-for colunm_index in range(1, 21):
-    feature_list = []
-    for colunm_name in df_weather_daily_totaldemand_joined.columns[colunm_index:21]:
+#convert object variables to numeric variables in order to calculate Pearson's coorelation coefficient
+#features selection by appling Pearson's coorelation coefficient
+for colunm_name in df_weather_daily_totaldemand_joined.columns:
+    if colunm_name == 'Date':
+        continue
+    elif df_weather_daily_totaldemand_joined[colunm_name].dtypes == 'object':
+        df_weather_daily_totaldemand_joined[colunm_name] = pd.factorize(df_weather_daily_totaldemand_joined[colunm_name])[0]       
+        pearson_coorelation = df_weather_daily_totaldemand_joined[colunm_name].corr(df_weather_daily_totaldemand_joined['TOTALDEMAND'])
+        print(colunm_name, pearson_coorelation)
+    
+    else:
+        pearson_coorelation = df_weather_daily_totaldemand_joined[colunm_name].corr(df_weather_daily_totaldemand_joined['TOTALDEMAND'])
+        print(colunm_name, pearson_coorelation)
+
+# for colunm_index in range(1, 21):
+#     feature_list = []
+#     for colunm_name in df_weather_daily_totaldemand_joined.columns[colunm_index:21]:
         
-        feature_list.append(colunm_name)
-        print(feature_list)
+#         feature_list.append(colunm_name)
+#         print(feature_list)
  
-    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.7, random_state=1)
+    # X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.7, random_state=1)
 
-    lm = linear_model.LinearRegression()
-    model = lm.fit(X_train, y_train)
+    # lm = linear_model.LinearRegression()
+    # model = lm.fit(X_train, y_train)
 
-    r2_test = lm.score(X_test, y_test)
-    lm.predict(X_test.head())
-    y_test.head()
+    # r2_test = lm.score(X_test, y_test)
+    # lm.predict(X_test.head())
+    # y_test.head()
