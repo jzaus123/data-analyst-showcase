@@ -61,5 +61,3 @@ for feature_index in range(0, len(features_selection)):
             best_feature_list = copy.deepcopy(features_list)
 
 print(f'Best r2 test score {best_r2_test_score} with features combination {best_feature_list}')
-# print(lm.predict(features_list_test.head()))
-# print(targetlabel_test.head())
