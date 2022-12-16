@@ -1,5 +1,6 @@
 import pandas as pd
 import data_cleaning
+import copy
 from sklearn import linear_model
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
@@ -35,13 +36,16 @@ for colunm_name in df_weather_daily_totaldemand_joined.columns:
         pearson_corr = df_weather_daily_totaldemand_joined[colunm_name].corr(df_weather_daily_totaldemand_joined['TOTALDEMAND'])
         pearson_coorelation_dict[colunm_name] = abs(pearson_corr)       
 
-#find out top six features with highest Pearson coorealtion coefficient
-features_selection = sorted(pearson_coorelation_dict.items(), key = lambda x:x[1], reverse = True)[:6]
+#find out features with highest Pearson coorealtion coefficient
+selected_feature_count = 10
+features_selection = sorted(pearson_coorelation_dict.items(), key = lambda x:x[1], reverse = True)[:selected_feature_count]
 
 features_selection = [feature_name[0] for feature_name in features_selection]
-for feature_index in range(0, 7):
+best_r2_test_score = 0
+best_feature_list = []
+for feature_index in range(0, len(features_selection)):
     features_list = []
-    for features in features_selection[feature_index:6]:
+    for features in features_selection[feature_index:]:
         features_list.append(features)
 
         feature_data = df_weather_daily_totaldemand_joined[features_list]
@@ -50,8 +54,12 @@ for feature_index in range(0, 7):
 
         lm = linear_model.LinearRegression()
         model = lm.fit(features_list_train, targetlabel_train)
-        print(f'{features_list}{lm.coef_}, {lm.intercept_}')
-        r2_test = lm.score(features_list_test, targetlabel_test)
-        print(f'{features_list},{r2_test}')
-        print(lm.predict(features_list_test.head()))
-        print(targetlabel_test.head())
+        r2_test_score = lm.score(features_list_test, targetlabel_test)
+
+        if r2_test_score > best_r2_test_score:
+            best_r2_test_score = r2_test_score
+            best_feature_list = copy.deepcopy(features_list)
+
+print(f'Best r2 test score {best_r2_test_score} with features combination {best_feature_list}')
+# print(lm.predict(features_list_test.head()))
+# print(targetlabel_test.head())
