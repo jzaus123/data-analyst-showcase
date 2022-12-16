@@ -37,7 +37,7 @@ for colunm_name in df_weather_daily_totaldemand_joined.columns:
         pearson_coorelation_dict[colunm_name] = abs(pearson_corr)       
 
 #find out features with highest Pearson coorealtion coefficient
-selected_feature_count = 10
+selected_feature_count = 6
 features_selection = sorted(pearson_coorelation_dict.items(), key = lambda x:x[1], reverse = True)[:selected_feature_count]
 
 features_selection = [feature_name[0] for feature_name in features_selection]
@@ -52,6 +52,7 @@ for feature_index in range(0, len(features_selection)):
         targetlabel = df_weather_daily_totaldemand_joined['TOTALDEMAND']
         features_list_train, features_list_test, targetlabel_train, targetlabel_test = train_test_split(feature_data, targetlabel, test_size=0.2, random_state=42)
 
+        #modelling - lienar regression
         lm = linear_model.LinearRegression()
         model = lm.fit(features_list_train, targetlabel_train)
         r2_test_score = lm.score(features_list_test, targetlabel_test)
