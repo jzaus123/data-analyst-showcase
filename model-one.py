@@ -21,30 +21,37 @@ df_weather_daily_totaldemand_joined = pd.merge(df_weather, df_daily_totaldemand,
 
 #convert object variables to numeric variables in order to calculate Pearson's coorelation coefficient
 #features selection by appling Pearson's coorelation coefficient
+pearson_coorelation_dict = {}
 for colunm_name in df_weather_daily_totaldemand_joined.columns:
-    if colunm_name == 'Date':
+    pearson_corr = 0
+    if colunm_name in ['TOTALDEMAND', 'Date']:
         continue
     elif df_weather_daily_totaldemand_joined[colunm_name].dtypes == 'object':
-        df_weather_daily_totaldemand_joined[colunm_name] = pd.factorize(df_weather_daily_totaldemand_joined[colunm_name])[0]       
-        pearson_coorelation = df_weather_daily_totaldemand_joined[colunm_name].corr(df_weather_daily_totaldemand_joined['TOTALDEMAND'])
-        print(colunm_name, pearson_coorelation)
+        df_weather_daily_totaldemand_joined[colunm_name] = pd.factorize(df_weather_daily_totaldemand_joined[colunm_name])[0] 
+        pearson_corr = df_weather_daily_totaldemand_joined[colunm_name].corr(df_weather_daily_totaldemand_joined['TOTALDEMAND'])
+        pearson_coorelation_dict[colunm_name] = abs(pearson_corr)
     
     else:
-        pearson_coorelation = df_weather_daily_totaldemand_joined[colunm_name].corr(df_weather_daily_totaldemand_joined['TOTALDEMAND'])
-        print(colunm_name, pearson_coorelation)
+        pearson_corr = df_weather_daily_totaldemand_joined[colunm_name].corr(df_weather_daily_totaldemand_joined['TOTALDEMAND'])
+        pearson_coorelation_dict[colunm_name] = abs(pearson_corr)       
 
-# for colunm_index in range(1, 21):
-#     feature_list = []
-#     for colunm_name in df_weather_daily_totaldemand_joined.columns[colunm_index:21]:
-        
-#         feature_list.append(colunm_name)
-#         print(feature_list)
- 
-    # X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.7, random_state=1)
+#find out top six features with highest Pearson coorealtion coefficient
+features_selection = sorted(pearson_coorelation_dict.items(), key = lambda x:x[1], reverse = True)[:6]
 
-    # lm = linear_model.LinearRegression()
-    # model = lm.fit(X_train, y_train)
+features_selection = [feature_name[0] for feature_name in features_selection]
+for feature_index in range(0, 7):
+    features_list = []
+    for features in features_selection[feature_index:6]:
+        features_list.append(features)
 
-    # r2_test = lm.score(X_test, y_test)
-    # lm.predict(X_test.head())
-    # y_test.head()
+        feature_data = df_weather_daily_totaldemand_joined[features_list]
+        targetlabel = df_weather_daily_totaldemand_joined['TOTALDEMAND']
+        features_list_train, features_list_test, targetlabel_train, targetlabel_test = train_test_split(feature_data, targetlabel, test_size=0.2, random_state=42)
+
+        lm = linear_model.LinearRegression()
+        model = lm.fit(features_list_train, targetlabel_train)
+        print(f'{features_list}{lm.coef_}, {lm.intercept_}')
+        r2_test = lm.score(features_list_test, targetlabel_test)
+        print(f'{features_list},{r2_test}')
+        print(lm.predict(features_list_test.head()))
+        print(targetlabel_test.head())
