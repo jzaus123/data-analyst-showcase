@@ -10,7 +10,6 @@ from sklearn.model_selection import train_test_split
 from sklearn import neighbors
 from sklearn import preprocessing
 
-
 df_price_demand = pd.read_csv('price_demand_data.csv')
 df_weather = pd.read_csv('weather_data.csv')
 
@@ -75,10 +74,10 @@ for feature_index in range(0, len(features_selection)):
         knn.fit(features_list_train, targetlabel_train)
 
         predictions = knn.predict(features_list_test)
-        accuracy_score = accuracy_score(targetlabel_test, predictions)
+        acc_score = accuracy_score(targetlabel_test, predictions)
 
-        if accuracy_score > best_accuracy_score:
-            best_accuracy_score = accuracy_score
+        if acc_score > best_accuracy_score:
+            best_accuracy_score = acc_score
             best_feature_list = copy.deepcopy(features_list)
 
 print(f'Best r2 test score {best_accuracy_score} with features combination {best_feature_list}')
