@@ -2,7 +2,6 @@ import pandas as pd
 import data_cleaning
 import math
 import copy
-import numpy as np
 from sklearn.metrics import normalized_mutual_info_score
 from sklearn.metrics import accuracy_score
 from sklearn.tree import DecisionTreeClassifier
@@ -80,4 +79,4 @@ for feature_index in range(0, len(features_selection)):
             best_accuracy_score = acc_score
             best_feature_list = copy.deepcopy(features_list)
 
-print(f'Best r2 test score {best_accuracy_score} with features combination {best_feature_list}')
+print(f'Best best_accuracy_score {best_accuracy_score} with features combination {best_feature_list}')
