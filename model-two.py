@@ -34,7 +34,6 @@ bin_number = round(math.sqrt(len(df_weather_price_category_joined['Date'])))
 #use Binning to convert numerical to categorical
 NMI_dict = {}
 for column_name in df_weather_price_category_joined.columns:
-    NMI = 0
     if column_name in ['PRICECATEGORY', 'Date']:
         continue
     if df_weather_price_category_joined[column_name].dtypes == 'object':
