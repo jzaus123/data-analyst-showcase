@@ -48,13 +48,13 @@ for feature_index in range(0, len(features_selection)):
         features_list.append(features)
 
         feature_data = df_weather_daily_totaldemand_joined[features_list]
-        targetlabel = df_weather_daily_totaldemand_joined['TOTALDEMAND']
-        features_list_train, features_list_test, targetlabel_train, targetlabel_test = train_test_split(feature_data, targetlabel, test_size=0.2, random_state=42)
+        target_data = df_weather_daily_totaldemand_joined['TOTALDEMAND']
+        features_train, features_test, target_train, target_test = train_test_split(feature_data, target_data, test_size=0.2, random_state=42)
 
         #modelling - lienar regression
         lm = linear_model.LinearRegression()
-        model = lm.fit(features_list_train, targetlabel_train)
-        r2_test_score = lm.score(features_list_test, targetlabel_test)
+        model = lm.fit(features_train, target_train)
+        r2_test_score = lm.score(features_test, target_test)
 
         if r2_test_score > best_r2_test_score:
             best_r2_test_score = r2_test_score
