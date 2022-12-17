@@ -37,46 +37,42 @@ for column_name in df_weather_price_category_joined.columns:
     NMI = 0
     if column_name in ['PRICECATEGORY', 'Date']:
         continue
-    elif df_weather_price_category_joined[column_name].dtypes == 'object':
+    if df_weather_price_category_joined[column_name].dtypes == 'object':
         df_weather_price_category_joined[column_name] = pd.factorize(df_weather_price_category_joined[column_name])[0] 
-        column = pd.cut(df_weather_price_category_joined[column_name], bin_number)
-        NMI = normalized_mutual_info_score(column, df_weather_price_category_joined['PRICECATEGORY'], average_method='min')
-        NMI_dict[column_name] = NMI
-    
-    else:
-        column = pd.cut(df_weather_price_category_joined[column_name], bin_number)
-        NMI = normalized_mutual_info_score(column, df_weather_price_category_joined['PRICECATEGORY'], average_method='min')
-        NMI_dict[column_name] = NMI
+
+    column = pd.cut(df_weather_price_category_joined[column_name], bin_number)
+    NMI = normalized_mutual_info_score(column, df_weather_price_category_joined['PRICECATEGORY'], average_method='min')
+    NMI_dict[column_name] = NMI
 
 #find out features with highest NMI
 selected_feature_count = 20
-features_selection = sorted(NMI_dict.items(), key = lambda x:x[1], reverse = True)[:selected_feature_count]
+feature_selection = sorted(NMI_dict.items(), key = lambda x:x[1], reverse = True)[:selected_feature_count]
 
-features_selection = [feature_name[0] for feature_name in features_selection]
+feature_selection = [feature_name[0] for feature_name in feature_selection]
 best_accuracy_score = 0
 best_feature_list = []
-for feature_index in range(0, len(features_selection)):
-    features_list = []
-    for features in features_selection[feature_index:]:
-        features_list.append(features)
+for feature_index in range(0, len(feature_selection)):
+    feature_list = []
+    for feature in feature_selection[feature_index:]:
+        feature_list.append(feature)
 
-        feature_data = df_weather_price_category_joined[features_list]
+        feature_data = df_weather_price_category_joined[feature_list]
         targetlabel = df_weather_price_category_joined['PRICECATEGORY']
-        features_list_train, features_list_test, targetlabel_train, targetlabel_test = train_test_split(feature_data, targetlabel, test_size=0.2, random_state=42)
+        features_train, features_test, targetlabel_train, targetlabel_test = train_test_split(feature_data, targetlabel, test_size=0.2, random_state=42)
 
         #modelling - K-Nearest-Neighbors 
-        scaler = preprocessing.StandardScaler().fit(features_list_train)
-        features_train = scaler.transform(features_list_train)
-        features_test = scaler.transform(features_list_test)
+        scaler = preprocessing.StandardScaler().fit(features_train)
+        features_train = scaler.transform(features_train)
+        features_test = scaler.transform(features_test)
 
         knn = neighbors.KNeighborsClassifier(n_neighbors = 5)
-        knn.fit(features_list_train, targetlabel_train)
+        knn.fit(features_train, targetlabel_train)
 
-        predictions = knn.predict(features_list_test)
+        predictions = knn.predict(features_test)
         acc_score = accuracy_score(targetlabel_test, predictions)
 
         if acc_score > best_accuracy_score:
             best_accuracy_score = acc_score
-            best_feature_list = copy.deepcopy(features_list)
+            best_feature_list = copy.deepcopy(feature_list)
 
 print(f'Best best_accuracy_score {best_accuracy_score} with features combination {best_feature_list}')
