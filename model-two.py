@@ -24,7 +24,7 @@ df_weather_price_category_joined = df_price_demand.groupby(['SETTLEMENTDATE']).a
 
 df_weather_price_category_joined = pd.merge(df_weather, df_weather_price_category_joined, how = 'inner', left_on = 'Date', right_on = 'SETTLEMENTDATE')
 
-#remove 'REGION' colunm 
+#remove 'REGION' column 
 df_weather_price_category_joined.drop('REGION', axis = 1, inplace = True)
 
 #use square root rule to compute numbers of bin
