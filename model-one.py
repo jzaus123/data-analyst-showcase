@@ -24,7 +24,6 @@ df_weather_daily_totaldemand_joined = pd.merge(df_weather, df_daily_totaldemand,
 #features selection by appling Pearson's coorelation coefficient
 pearson_coorelation_dict = {}
 for colunm_name in df_weather_daily_totaldemand_joined.columns:
-    pearson_corr = 0
     if colunm_name in ['TOTALDEMAND', 'Date']:
         continue
     elif df_weather_daily_totaldemand_joined[colunm_name].dtypes == 'object':
