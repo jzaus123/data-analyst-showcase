@@ -26,14 +26,12 @@ pearson_correlation_dict = {}
 for column_name in df_weather_daily_totaldemand_joined.columns:
     if column_name in ['TOTALDEMAND', 'Date']:
         continue
-    elif df_weather_daily_totaldemand_joined[column_name].dtypes == 'object':
-        df_weather_daily_totaldemand_joined[column_name] = pd.factorize(df_weather_daily_totaldemand_joined[column_name])[0] 
-        pearson_corr = df_weather_daily_totaldemand_joined[column_name].corr(df_weather_daily_totaldemand_joined['TOTALDEMAND'])
-        pearson_correlation_dict[column_name] = abs(pearson_corr)
     
-    else:
-        pearson_corr = df_weather_daily_totaldemand_joined[column_name].corr(df_weather_daily_totaldemand_joined['TOTALDEMAND'])
-        pearson_correlation_dict[column_name] = abs(pearson_corr)       
+    if df_weather_daily_totaldemand_joined[column_name].dtypes == 'object':
+        df_weather_daily_totaldemand_joined[column_name] = pd.factorize(df_weather_daily_totaldemand_joined[column_name])[0] 
+
+    pearson_corr = df_weather_daily_totaldemand_joined[column_name].corr(df_weather_daily_totaldemand_joined['TOTALDEMAND'])
+    pearson_correlation_dict[column_name] = abs(pearson_corr)   
 
 #find out features with highest Pearson correaltion coefficient
 selected_feature_count = 6
