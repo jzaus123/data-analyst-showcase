@@ -44,7 +44,7 @@ for column_name in df_weather_price_category_joined.columns:
     NMI_dict[column_name] = NMI
 
 #find out features with highest NMI
-selected_feature_count = 20
+selected_feature_count = 10
 feature_selection = sorted(NMI_dict.items(), key = lambda x:x[1], reverse = True)[:selected_feature_count]
 
 feature_selection = [feature_name[0] for feature_name in feature_selection]
