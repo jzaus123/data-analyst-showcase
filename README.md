@@ -1,5 +1,5 @@
 
-# **Producing two prectiction models**
+# **Producing two prediction models**
 - Model one is aim to predict the total daily energy usage based on the provided weather dataset. 
 - Model two is aim to predict the maximum daily price category based on the provided weather dataset. 
 
