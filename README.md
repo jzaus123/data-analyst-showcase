@@ -32,6 +32,6 @@ python model-two.py
 3. Applying Data-cleaning module to clean datasets
 4. Data preparation - merging two datasets into dataframe for analysing
 5. Determining features for producing models - Pearson’s Correlation Coefficient & Mutual Information
-6. Defining deoendent and independant variables for training and testing data
+6. Defining dependant and independant variables for training and testing data
 7. Defining algorithms - Regression for numeric outputs & Classification for categorical outputs
 8. Looking for a feature conbimation to compute best model evaluation using R-Squared or Accuracy Score 
