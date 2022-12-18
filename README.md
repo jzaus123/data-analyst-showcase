@@ -34,4 +34,4 @@ python model-two.py
 5. Determining features for producing models - Pearson’s Correlation Coefficient & Mutual Information
 6. Defining dependant and independant variables for training and testing data
 7. Defining algorithms - Regression for numeric outputs & Classification for categorical outputs
-8. Looking for a feature conbimation to compute best model evaluation using R-Squared or Accuracy Score 
+8. Looking for a feature combination to compute best model evaluation using R-Squared or Accuracy Score 
