@@ -12,7 +12,7 @@ df_weather = pd.read_csv('weather_data.csv')
 data_cleaning.clean_price_demand_dataset(df_price_demand)
 data_cleaning.clean_weather_dataset(df_weather)
 
-#remove hours and minus
+#remove hours and mins
 df_price_demand['SETTLEMENTDATE'] = pd.to_datetime(df_price_demand['SETTLEMENTDATE'].dt.date)
 
 #calculate daily total demand
